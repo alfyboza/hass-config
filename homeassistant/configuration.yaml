@@ -1,0 +1,23 @@
+# DO NOT REMOVE! Loads default set of integrations
+default_config:
+
+# Themes
+frontend:
+  themes: !include_dir_merge_named themes/
+
+# Text-to-speech
+tts:
+  - platform: google_translate
+
+# Split configurations
+automation manual: !include_dir_merge_list automations/
+automation ui: !include automations.yaml
+input_boolean: !include helpers/booleans.yaml
+input_text: !include helpers/texts.yaml
+scene: !include scenes.yaml
+script: !include scripts.yaml
+shell_command: !include_dir_merge_named shell_commands/
+
+# Inline configurations
+binary_sensor:
+  - platform: flic

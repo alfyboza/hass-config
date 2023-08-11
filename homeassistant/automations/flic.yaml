@@ -1,0 +1,75 @@
+# Bathroom Flic
+- id: "1691697383064"
+  alias: When Bathroom Flic is clicked once, toggle lights
+  description: ""
+  trigger_variables:
+    bathroom_flic: flic_80e4da7c03cd
+  trigger:
+    - platform: event
+      event_type: flic_click
+      event_data:
+        button_name: "{{ bathroom_flic }}"
+        click_type: single
+  action:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.bathroom_events_enabled
+    - service: light.toggle
+      data: {}
+      target:
+        area_id: bathroom
+  mode: queued
+- id: bdfd9460b2b447eeb423d047d9a98f76
+  alias: When Bathroom Flic is clicked twice, disable motion sensor events
+  description: ""
+  trigger_variables:
+    bathroom_flic: flic_80e4da7c03cd
+  trigger:
+    - platform: event
+      event_type: flic_click
+      event_data:
+        button_name: "{{ bathroom_flic }}"
+        click_type: double
+  action:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.bathroom_events_enabled
+  mode: single
+- id: "1691699582646"
+  alias: When Bathroom Flic is held down, increase brightness of lights
+  description: ""
+  trigger_variables:
+    bathroom_flic: flic_80e4da7c03cd
+  trigger:
+    - platform: event
+      event_type: flic_click
+      event_data:
+        button_name: "{{ bathroom_flic }}"
+        click_type: hold
+  action:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.bathroom_events_enabled
+    - choose:
+        # Daytime
+        - alias: During the day, set lights to Energize
+          conditions: >
+            {{ is_state('binary_sensor.nighttime_schedule_for_motion_sensors', 'off') }}
+          sequence:
+            - service: hue.activate_scene
+              data: {}
+              target:
+                entity_id: scene.bathroom_energize
+        # Nighttime
+        - alias: At night, set lights to Rest
+          conditions: >
+            {{ is_state('binary_sensor.nighttime_schedule_for_motion_sensors', 'on') }}
+          sequence:
+            - service: hue.activate_scene
+              data: {}
+              target:
+                entity_id: scene.bathroom_rest
+  mode: queued

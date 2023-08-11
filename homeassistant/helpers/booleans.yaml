@@ -1,0 +1,4 @@
+bathroom_events_enabled:
+  name: Bathroom Events Enabled
+  initial: true
+  icon: mdi:motion-play-outline

@@ -1,0 +1,14 @@
+# Night Sound
+- id: "1691590430341"
+  alias: At 10 PM, turn on Night Sound for Sonos Beam
+  description: ""
+  trigger:
+    - platform: time
+      at: "22:00:00"
+  condition: []
+  action:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.surround_sound_night_sound
+  mode: single

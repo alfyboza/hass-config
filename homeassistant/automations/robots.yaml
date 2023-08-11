@@ -1,0 +1,76 @@
+# Automatic Deployments
+- id: "1691550177256"
+  alias: Deploy Roomba when noone's home for 15 minutes
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_boolean.someone_is_home
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+      to: "off"
+  condition: []
+  action:
+    - service: shell_command.pushcut_roomba_deploying
+      data: {}
+    - device_id: 4bb88ad19539595523d05bec370d7063
+      domain: vacuum
+      entity_id: vacuum.roomba
+      type: clean
+  mode: single
+- id: "1691550309152"
+  alias: Deploy Braava after Roomba docks and noone's home
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - vacuum.roomba
+      to: docked
+  condition:
+    - condition: state
+      entity_id: input_boolean.someone_is_home
+      state: "off"
+  action:
+    - service: shell_command.pushcut_braava_deploying
+      data: {}
+    - device_id: 5ed9b6624dfb178b4864483ffc6fce23
+      domain: vacuum
+      entity_id: vacuum.braava
+      type: clean
+  mode: single
+
+# Last Ran
+- id: "1691444054969"
+  alias: Update Roomba Last Ran when robot vacuum begins cleaning
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - vacuum.roomba
+      to: cleaning
+  condition: []
+  action:
+    - service: input_datetime.set_datetime
+      data:
+        timestamp: "{{ now().timestamp() }}"
+      target:
+        entity_id: input_datetime.roomba_last_ran
+  mode: single
+- id: "1691544908828"
+  alias: Update Braava Last Ran when robot mop begins cleaning
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - vacuum.braava
+      to: cleaning
+  condition: []
+  action:
+    - service: input_datetime.set_datetime
+      data:
+        timestamp: "{{ now().timestamp() }}"
+      target:
+        entity_id: input_datetime.braava_last_ran
+  mode: single

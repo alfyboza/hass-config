@@ -1,0 +1,116 @@
+# General
+- id: "1691699089949"
+  alias: After Bathroom lights have been off for 15 seconds, enable motion sensor events
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - light.bathroom
+      to: "off"
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 15
+  condition: []
+  action:
+    - service: input_boolean.turn_on
+      data: {}
+      target:
+        entity_id: input_boolean.bathroom_events_enabled
+  mode: single
+
+# Daytime
+- id: "1691553574806"
+  alias: During the day, set Bathroom lights to Cool Bright when motion is detected
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.hue_motion_sensor_1_motion
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.nighttime_schedule_for_motion_sensors
+      state: "off"
+    - condition: state
+      entity_id: input_boolean.bathroom_events_enabled
+      state: "on"
+  action:
+    - service: hue.activate_scene
+      data: {}
+      target:
+        entity_id: scene.bathroom_cool_bright
+  mode: single
+- id: "1691553433212"
+  alias: During the day, turn off Bathroom lights after 20 minutes of no motion detected
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.hue_motion_sensor_1_motion
+      to: "off"
+      for:
+        hours: 0
+        minutes: 20
+        seconds: 0
+  condition:
+    - condition: state
+      entity_id: binary_sensor.nighttime_schedule_for_motion_sensors
+      state: "off"
+    - condition: state
+      entity_id: input_boolean.bathroom_events_enabled
+      state: "on"
+  action:
+    - service: light.turn_off
+      data: {}
+      target:
+        area_id: bathroom
+  mode: single
+
+# Nighttime
+- id: "1691553246860"
+  alias: At night, set Bathroom lights to Dimmed when motion detected
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.hue_motion_sensor_1_motion
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.nighttime_schedule_for_motion_sensors
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.bathroom_events_enabled
+      state: "on"
+  action:
+    - service: hue.activate_scene
+      data: {}
+      target:
+        entity_id: scene.bathroom_dimmed
+  mode: single
+- id: "1691552994010"
+  alias: At night, turn off Bathroom lights after 5 minutes of no motion detected
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.hue_motion_sensor_1_motion
+      to: "off"
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
+  condition:
+    - condition: state
+      entity_id: binary_sensor.nighttime_schedule_for_motion_sensors
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.bathroom_events_enabled
+      state: "on"
+  action:
+    - service: light.turn_off
+      data: {}
+      target:
+        area_id: bathroom
+  mode: single

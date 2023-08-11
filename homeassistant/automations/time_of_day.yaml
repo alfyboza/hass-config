@@ -1,0 +1,78 @@
+# Automatically adjust lights by time of day
+- id: "1691422599429"
+  alias: On wake-up, set Living Room lights to Dimmed over 15 minutes
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.time_of_day
+      to: Waking up
+  condition: []
+  action:
+    - service: hue.activate_scene
+      data:
+        transition: 900
+      target:
+        entity_id: scene.studio_dimmed
+  mode: single
+- id: "1691422820816"
+  alias: Once awake, set Living Room lights to Natural Light
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.time_of_day
+      to: Awake
+  condition: []
+  action:
+    - service: hue.activate_scene
+      data: {}
+      target:
+        entity_id: scene.studio_natural_light
+  mode: single
+- id: "1691423183955"
+  alias:
+    On wind-down, set Living Rooms lights to Rest and transition to Nightlight
+    over 15 minutes
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.time_of_day
+      to: Winding down
+  condition: []
+  action:
+    - service: hue.activate_scene
+      data: {}
+      target:
+        entity_id: scene.studio_rest
+    - delay:
+        hours: 0
+        minutes: 1
+        seconds: 0
+        milliseconds: 0
+    - service: hue.activate_scene
+      data:
+        transition: 840
+      target:
+        entity_id: scene.studio_nightlight
+  mode: single
+- id: "1691423366893"
+  alias: Once asleep, turn everything off
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.time_of_day
+      to: Asleep
+  condition: []
+  action:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.home
+    - service: remote.turn_off
+      data: {}
+      target:
+        entity_id: remote.harmony_hub
+  mode: single

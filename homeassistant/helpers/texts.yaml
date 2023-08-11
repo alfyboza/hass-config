@@ -1,0 +1,9 @@
+bathroom_flic:
+  name: Bathroom Flic
+  initial: flic_80e4da7c03cd
+  icon: mdi:radiobox-blank
+pushcut_webhook_secret:
+  name: Pushcut Webhook Secret
+  initial: !secret pushcut_webhook_secret
+  icon: mdi:form-textbox-password
+  mode: password

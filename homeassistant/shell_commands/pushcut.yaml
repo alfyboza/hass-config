@@ -1,0 +1,4 @@
+pushcut_roomba_deploying: >
+  curl -X POST -d "{\"title\":\"Deploying Roomba 🤖\"}" -H "Content-Type: application/json" https://api.pushcut.io/{{ states('input_text.pushcut_webhook_secret') }}/notifications/fyi-deploying-robot
+pushcut_braava_deploying: >
+  curl -X POST -d "{\"title\":\"Deploying Braava 🤖\"}" -H "Content-Type: application/json" https://api.pushcut.io/{{ states('input_text.pushcut_webhook_secret') }}/notifications/fyi-deploying-robot

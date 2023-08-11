@@ -1,0 +1,16 @@
+# Arrival
+- id: "1691554286555"
+  alias: When someone arrives home, set Living Room lights to Bright
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_boolean.someone_is_home
+      to: "on"
+  condition: []
+  action:
+    - service: hue.activate_scene
+      data: {}
+      target:
+        entity_id: scene.studio_bright
+  mode: single
