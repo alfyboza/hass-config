@@ -1,0 +1,9 @@
+{
+  "yaml.customTags": [
+    "!include scalar",
+    "!include_dir_merge_list scalar",
+    "!include_dir_merge_named scalar",
+    "!input scalar",
+    "!secret scalar"
+  ]
+}
