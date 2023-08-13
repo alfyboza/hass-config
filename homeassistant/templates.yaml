@@ -1,0 +1,15 @@
+- binary_sensor:
+    - name: Do Not Disturb
+      unique_id: do_not_disturb
+      icon: >
+        {% if this.state == 'off' -%}
+          mdi:minus-circle-off
+        {%- else -%}
+          mdi:minus-circle
+        {%- endif %}
+      state: >
+        {% if states('binary_sensor.quiet_time') == 'off' and states('input_select.time_of_day') == 'Awake' -%}
+          off
+        {%- else -%}
+          on
+        {%- endif %}

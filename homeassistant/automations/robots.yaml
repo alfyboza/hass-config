@@ -13,7 +13,7 @@
       to: "off"
   condition:
     - condition: state
-      entity_id: binary_sensor.quiet_time
+      entity_id: binary_sensor.do_not_disturb
       state: "off"
   action:
     - service: shell_command.pushcut_roomba_deploying
@@ -36,7 +36,7 @@
       entity_id: input_boolean.someone_is_home
       state: "off"
     - condition: state
-      entity_id: binary_sensor.quiet_time
+      entity_id: binary_sensor.do_not_disturb
       state: "off"
   action:
     - service: shell_command.pushcut_braava_deploying
