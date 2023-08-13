@@ -8,7 +8,7 @@
           mdi:minus-circle
         {%- endif %}
       state: >
-        {% if states('binary_sensor.quiet_time') == 'off' and states('input_select.time_of_day') == 'Awake' -%}
+        {% if is_state('binary_sensor.quiet_time', 'off') and is_state('input_select.time_of_day', 'Awake') -%}
           off
         {%- else -%}
           on
