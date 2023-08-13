@@ -64,12 +64,12 @@
               target:
                 entity_id: scene.bathroom_energize
         # Nighttime
-        - alias: At night, set lights to Rest
+        - alias: At night, set lights to Read
           conditions: >
             {{ is_state('binary_sensor.nighttime_schedule_for_motion_sensors', 'on') }}
           sequence:
             - service: hue.activate_scene
               data: {}
               target:
-                entity_id: scene.bathroom_rest
+                entity_id: scene.bathroom_read
   mode: queued
