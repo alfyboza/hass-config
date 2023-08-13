@@ -12,12 +12,9 @@ tts:
 # Split configurations
 automation manual: !include_dir_merge_list automations/
 automation ui: !include automations.yaml
+binary_sensor: !include helpers/binary_sensors.yaml
 input_boolean: !include helpers/booleans.yaml
 input_text: !include helpers/texts.yaml
 scene: !include scenes.yaml
 script: !include scripts.yaml
 shell_command: !include_dir_merge_named shell_commands/
-
-# Inline configurations
-binary_sensor:
-  - platform: flic

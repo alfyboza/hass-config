@@ -1,0 +1,9 @@
+# Flic
+- platform: flic
+
+# Range denoting quiet time
+- platform: tod
+  unique_id: quiet_time
+  name: Quiet Time
+  after: "22:00"
+  before: "08:00"

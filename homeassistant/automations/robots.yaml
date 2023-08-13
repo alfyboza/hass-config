@@ -11,7 +11,10 @@
         minutes: 15
         seconds: 0
       to: "off"
-  condition: []
+  condition:
+    - condition: state
+      entity_id: binary_sensor.quiet_time
+      state: "off"
   action:
     - service: shell_command.pushcut_roomba_deploying
       data: {}
@@ -31,6 +34,9 @@
   condition:
     - condition: state
       entity_id: input_boolean.someone_is_home
+      state: "off"
+    - condition: state
+      entity_id: binary_sensor.quiet_time
       state: "off"
   action:
     - service: shell_command.pushcut_braava_deploying
