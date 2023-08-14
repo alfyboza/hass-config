@@ -1,7 +1,14 @@
 # Flic
 - platform: flic
 
-# Range denoting quiet time
+# Nighttime
+- platform: tod
+  unique_id: nighttime
+  name: Nighttime
+  after: "00:00"
+  before: "07:00"
+
+# Quiet time
 - platform: tod
   unique_id: quiet_time
   name: Quiet Time

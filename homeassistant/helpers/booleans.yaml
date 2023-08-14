@@ -4,6 +4,12 @@ bathroom_events_enabled:
   initial: true
   icon: mdi:motion-play-outline
 
+# Alternate Bathroom light color scheme?
+bathroom_alternate_color_scheme_enabled:
+  name: Bathroom Alternate Color Scheme Enabled
+  initial: false
+  icon: mdi:palette
+
 # Is someone home?
 is_someone_home:
   name: Someone is Home

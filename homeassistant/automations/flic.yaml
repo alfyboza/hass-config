@@ -43,7 +43,7 @@
         entity_id: input_boolean.bathroom_events_enabled
   mode: single
 - id: "1691699582646"
-  alias: When Bathroom Flic is held down, increase brightness of lights
+  alias: When Bathroom Flic is held down during the day, increase brightness of lights
   description: ""
   trigger_variables:
     bathroom_flic: flic_80e4da7c03cd
@@ -53,25 +53,73 @@
       event_data:
         button_name: "{{ bathroom_flic }}"
         click_type: hold
+  condition:
+    - condition: state
+      entity_id: binary_sensor.nighttime
+      state: "off"
   action:
     - service: input_boolean.turn_off
       data: {}
       target:
         entity_id: input_boolean.bathroom_events_enabled
+    - service: input_boolean.toggle
+      data: {}
+      target:
+        entity_id: input_boolean.bathroom_alternate_color_scheme_enabled
     - choose:
-        # Daytime
-        - alias: During the day, set lights to Energize
+        - alias: Set lights to Cool Bright
           conditions: >
-            {{ is_state('binary_sensor.nighttime_schedule_for_motion_sensors', 'off') }}
+            {{ is_state('input_boolean.bathroom_alternate_color_scheme_enabled', 'off') }}
+          sequence:
+            - service: hue.activate_scene
+              data: {}
+              target:
+                entity_id: scene.bathroom_cool_bright
+        - alias: Alternatively, set lights to Energize
+          conditions: >
+            {{ is_state('input_boolean.bathroom_alternate_color_scheme_enabled', 'on') }}
           sequence:
             - service: hue.activate_scene
               data: {}
               target:
                 entity_id: scene.bathroom_energize
-        # Nighttime
-        - alias: At night, set lights to Read
+  mode: queued
+- id: e01f456a-618c-4c32-9c6f-95dc853585e2
+  alias: When Bathroom Flic is held down at night, increase brightness of lights
+  description: ""
+  trigger_variables:
+    bathroom_flic: flic_80e4da7c03cd
+  trigger:
+    - platform: event
+      event_type: flic_click
+      event_data:
+        button_name: "{{ bathroom_flic }}"
+        click_type: hold
+  condition:
+    - condition: state
+      entity_id: binary_sensor.nighttime
+      state: "on"
+  action:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.bathroom_events_enabled
+    - service: input_boolean.toggle
+      data: {}
+      target:
+        entity_id: input_boolean.bathroom_alternate_color_scheme_enabled
+    - choose:
+        - alias: Set lights to Dimmed
           conditions: >
-            {{ is_state('binary_sensor.nighttime_schedule_for_motion_sensors', 'on') }}
+            {{ is_state('input_boolean.bathroom_alternate_color_scheme_enabled', 'off') }}
+          sequence:
+            - service: hue.activate_scene
+              data: {}
+              target:
+                entity_id: scene.bathroom_dimmed
+        - alias: Alternatively, set lights to Read
+          conditions: >
+            {{ is_state('input_boolean.bathroom_alternate_color_scheme_enabled', 'on') }}
           sequence:
             - service: hue.activate_scene
               data: {}

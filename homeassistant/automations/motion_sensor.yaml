@@ -1,6 +1,6 @@
 # General
 - id: "1691699089949"
-  alias: After Bathroom lights have been off for 15 seconds, enable motion sensor events
+  alias: After Bathroom lights have been off for 15 seconds, enable motion sensor events and reset color scheme
   description: ""
   trigger:
     - platform: state
@@ -17,6 +17,10 @@
       data: {}
       target:
         entity_id: input_boolean.bathroom_events_enabled
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.bathroom_alternate_color_scheme_enabled
   mode: single
 
 # Daytime
@@ -30,7 +34,7 @@
       to: "on"
   condition:
     - condition: state
-      entity_id: binary_sensor.nighttime_schedule_for_motion_sensors
+      entity_id: binary_sensor.nighttime
       state: "off"
     - condition: state
       entity_id: input_boolean.bathroom_events_enabled
@@ -55,7 +59,7 @@
         seconds: 0
   condition:
     - condition: state
-      entity_id: binary_sensor.nighttime_schedule_for_motion_sensors
+      entity_id: binary_sensor.nighttime
       state: "off"
     - condition: state
       entity_id: input_boolean.bathroom_events_enabled
@@ -78,7 +82,7 @@
       to: "on"
   condition:
     - condition: state
-      entity_id: binary_sensor.nighttime_schedule_for_motion_sensors
+      entity_id: binary_sensor.nighttime
       state: "on"
     - condition: state
       entity_id: input_boolean.bathroom_events_enabled
@@ -103,7 +107,7 @@
         seconds: 0
   condition:
     - condition: state
-      entity_id: binary_sensor.nighttime_schedule_for_motion_sensors
+      entity_id: binary_sensor.nighttime
       state: "on"
     - condition: state
       entity_id: input_boolean.bathroom_events_enabled
