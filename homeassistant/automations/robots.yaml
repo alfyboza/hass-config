@@ -5,7 +5,7 @@
   trigger:
     - platform: state
       entity_id:
-        - input_boolean.someone_is_home
+        - input_boolean.is_someone_home
       for:
         hours: 0
         minutes: 15
@@ -33,7 +33,7 @@
       to: docked
   condition:
     - condition: state
-      entity_id: input_boolean.someone_is_home
+      entity_id: input_boolean.is_someone_home
       state: "off"
     - condition: state
       entity_id: binary_sensor.do_not_disturb

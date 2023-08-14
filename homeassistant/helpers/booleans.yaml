@@ -1,4 +1,11 @@
+# Enable motion sensor events?
 bathroom_events_enabled:
   name: Bathroom Events Enabled
   initial: true
   icon: mdi:motion-play-outline
+
+# Is someone home?
+is_someone_home:
+  name: Someone is Home
+  initial: true
+  icon: mdi:location-enter

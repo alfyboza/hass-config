@@ -7,7 +7,10 @@
       entity_id:
         - input_select.time_of_day
       to: Waking up
-  condition: []
+  condition:
+    - condition: state
+      entity_id: input_boolean.is_someone_home
+      state: "on"
   action:
     - service: hue.activate_scene
       data:
@@ -23,7 +26,10 @@
       entity_id:
         - input_select.time_of_day
       to: Awake
-  condition: []
+  condition:
+    - condition: state
+      entity_id: input_boolean.is_someone_home
+      state: "on"
   action:
     - service: hue.activate_scene
       data: {}
@@ -40,7 +46,10 @@
       entity_id:
         - input_select.time_of_day
       to: Winding down
-  condition: []
+  condition:
+    - condition: state
+      entity_id: input_boolean.is_someone_home
+      state: "on"
   action:
     - service: hue.activate_scene
       data: {}
@@ -65,7 +74,10 @@
       entity_id:
         - input_select.time_of_day
       to: Asleep
-  condition: []
+  condition:
+    - condition: state
+      entity_id: input_boolean.is_someone_home
+      state: "on"
   action:
     - service: light.turn_off
       data: {}

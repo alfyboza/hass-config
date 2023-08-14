@@ -1,1 +1,41 @@
-{}
+# When someone has arrived...
+someone_arrived:
+  alias: Someone Arrived
+  icon: mdi:location-enter
+  sequence:
+    # Turn on "Someone is Home"
+    - service: input_boolean.turn_on
+      data: {}
+      target:
+        entity_id: input_boolean.is_someone_home
+    # Set Living Room lights to Bright and Bathroom lights to Cool Bright
+    - service: hue.activate_scene
+      data: {}
+      target:
+        entity_id:
+          - scene.studio_bright
+          - scene.bathroom_cool_bright
+  mode: single
+
+# When everyone has left...
+everyone_left:
+  alias: Everyone Left
+  icon: mdi:location-exit
+  sequence:
+    # Turn off "Someone is Home"
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.is_someone_home
+    # Turn off the Harmony Hub
+    - service: select.select_option
+      data:
+        option: power_off
+      target:
+        entity_id: select.harmony_hub_activities
+    # Turn off all lights
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.home
+  mode: single
