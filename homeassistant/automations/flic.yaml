@@ -32,6 +32,11 @@
         button_name: "{{ bathroom_flic }}"
         click_type: double
   action:
+    - service: light.turn_off
+      data:
+        flash: short
+      target:
+        entity_id: light.bathroom
     - service: input_boolean.turn_off
       data: {}
       target:
