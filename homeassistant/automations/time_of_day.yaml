@@ -19,7 +19,7 @@
         entity_id: scene.studio_dimmed
   mode: single
 - id: "1691422820816"
-  alias: Once awake, set Living Room lights to Natural Light
+  alias: Once awake, set Living Room lights to Natural Light over 15 minutes
   description: ""
   trigger:
     - platform: state
@@ -31,10 +31,10 @@
       entity_id: input_boolean.is_someone_home
       state: "on"
   action:
-    - service: hue.activate_scene
+    - service: script.turn_on
       data: {}
       target:
-        entity_id: scene.studio_natural_light
+        entity_id: script.good_morning
   mode: single
 - id: "1691423183955"
   alias:

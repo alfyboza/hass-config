@@ -39,3 +39,23 @@ everyone_left:
       target:
         entity_id: light.home
   mode: single
+
+# Time of day
+good_morning:
+  alias: Good Morning
+  icon: mdi:weather-sunny
+  sequence:
+    # Turn on Energize in Living Room over 15 minutes
+    - service: hue.activate_scene
+      data:
+        transition: 900
+      target:
+        entity_id: scene.studio_energize
+    # Wait 15 minutes
+    - delay:
+        minutes: 15
+    # Set scene Natural Light in Living Room
+    - service: hue.activate_scene
+      data: {}
+      target:
+        entity_id: scene.studio_natural_light
