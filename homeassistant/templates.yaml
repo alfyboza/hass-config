@@ -2,14 +2,46 @@
     - name: Do Not Disturb
       unique_id: do_not_disturb
       icon: >
-        {% if this.state == 'off' -%}
-          mdi:minus-circle-off
-        {%- else -%}
+        {% if this.state == 'on' -%}
           mdi:minus-circle
+        {%- else -%}
+          mdi:minus-circle-off
         {%- endif %}
       state: >
-        {% if is_state('binary_sensor.quiet_time', 'off') and is_state('input_select.time_of_day', 'Awake') -%}
+        {% if is_state('binary_sensor.quiet_time', 'off') and is_state('input_select.activity', 'Awake') -%}
           off
         {%- else -%}
           on
         {%- endif %}
+    - name: Robots Ran Today
+      unique_id: robots_ran_today
+      icon: >
+        {% if this.state == 'on' -%}
+          mdi:robot
+        {%- else -%}
+          mdi:robot-off
+        {%- endif %}
+      state: >
+        {% if state_attr('input_datetime.robots_last_ran', 'timestamp') | timestamp_custom("%Y-%m-%d") == states('sensor.date') -%}
+          on
+        {%- else -%}
+          off
+        {%- endif %}
+    - name: Someone is Home
+      unique_id: someone_is_home
+      device_class: occupancy
+      state: >
+        {% if is_state('input_boolean.alfonso_is_home', 'on') or is_state('input_boolean.richard_is_home', 'on') -%}
+          on
+        {%- else -%}
+          off
+        {%- endif %}
+    # - name: Is Nighttime?
+    #   unique_id: is_nighttime
+
+    #   state: >
+    #     {% if is_state('binary_sensor.nighttime', 'on') and is_state('input_boolean.override_nighttime', 'off') -%}
+    #       on
+    #     {%- else -%}
+    #       off
+    #     {%- endif %}

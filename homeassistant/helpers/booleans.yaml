@@ -1,17 +1,25 @@
-# Enable motion sensor events?
+# Bathroom
+
+## Enable motion sensor events?
 bathroom_events_enabled:
   name: Bathroom Events Enabled
   initial: true
   icon: mdi:motion-play-outline
 
-# Alternate Bathroom light color scheme?
+## Alternate Bathroom light color scheme?
 bathroom_alternate_color_scheme_enabled:
   name: Bathroom Alternate Color Scheme Enabled
   initial: false
   icon: mdi:palette
 
-# Is someone home?
-is_someone_home:
-  name: Someone is Home
-  initial: true
-  icon: mdi:location-enter
+# Presence
+
+## Is Alfonso home?
+alfonso_is_home:
+  name: Alfonso is Home
+  icon: mdi:human-male
+
+## Is Richard home?
+richard_is_home:
+  name: Richard is Home
+  icon: mdi:human-male

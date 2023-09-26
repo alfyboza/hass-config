@@ -1,90 +1,69 @@
-# Automatically adjust lights by time of day
+# Time of Day
+
+## Waking up
 - id: "1691422599429"
-  alias: On wake-up, set Living Room lights to Dimmed over 15 minutes
-  description: ""
+  alias: On wake-up, run "Waking Up" script
   trigger:
+    # When activity set to "Waking up"
     - platform: state
       entity_id:
-        - input_select.time_of_day
+        - input_select.activity
       to: Waking up
-  condition:
-    - condition: state
-      entity_id: input_boolean.is_someone_home
-      state: "on"
   action:
-    - service: hue.activate_scene
-      data:
-        transition: 900
-      target:
-        entity_id: scene.studio_dimmed
-  mode: single
-- id: "1691422820816"
-  alias: Once awake, set Living Room lights to Natural Light over 15 minutes
-  description: ""
-  trigger:
-    - platform: state
-      entity_id:
-        - input_select.time_of_day
-      to: Awake
-  condition:
-    - condition: state
-      entity_id: input_boolean.is_someone_home
-      state: "on"
-  action:
+    # Run "Waking Up" script
     - service: script.turn_on
       data: {}
       target:
-        entity_id: script.good_morning
+        entity_id: script.wake_up
   mode: single
+
+## Awake
+- id: "1691422820816"
+  alias: Once awake, run "Awake" script
+  trigger:
+    # When activity set to "Awake"
+    - platform: state
+      entity_id:
+        - input_select.activity
+      to: Awake
+  action:
+    # Run "Awake" script
+    - service: script.turn_on
+      data: {}
+      target:
+        entity_id: script.awake
+  mode: single
+
+## Winding down
 - id: "1691423183955"
-  alias:
-    On wind-down, set Living Rooms lights to Rest and transition to Nightlight
-    over 15 minutes
-  description: ""
+  alias: On wind-down, run "Winding Down" script
   trigger:
+    # When activity set to "Winding down"
     - platform: state
       entity_id:
-        - input_select.time_of_day
+        - input_select.activity
       to: Winding down
-  condition:
-    - condition: state
-      entity_id: input_boolean.is_someone_home
-      state: "on"
   action:
-    - service: hue.activate_scene
+    # Run "Winding Down" script
+    - service: script.turn_on
       data: {}
       target:
-        entity_id: scene.studio_rest
-    - delay:
-        hours: 0
-        minutes: 1
-        seconds: 0
-        milliseconds: 0
-    - service: hue.activate_scene
-      data:
-        transition: 840
-      target:
-        entity_id: scene.studio_nightlight
+        entity_id: script.wind_down
   mode: single
+
+## Asleep
 - id: "1691423366893"
-  alias: Once asleep, turn everything off
-  description: ""
+  alias: Once asleep, run "Asleep" script
   trigger:
+    # When activity set to "Asleep"
     - platform: state
       entity_id:
-        - input_select.time_of_day
+        - input_select.activity
       to: Asleep
-  condition:
-    - condition: state
-      entity_id: input_boolean.is_someone_home
-      state: "on"
   action:
-    - service: light.turn_off
+    # Run "Asleep" script
+    - service: script.turn_on
       data: {}
       target:
-        entity_id: light.home
-    - service: remote.turn_off
-      data: {}
-      target:
-        entity_id: remote.harmony_hub
+        entity_id: script.asleep
   mode: single

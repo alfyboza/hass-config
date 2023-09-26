@@ -1,0 +1,12 @@
+# Activity
+
+## What are we doing?
+activity:
+  name: What Are We Doing?
+  icon: mdi:human-male-male
+  options:
+    - Waking up
+    - Awake
+    - Winding down
+    - Asleep
+    - Away

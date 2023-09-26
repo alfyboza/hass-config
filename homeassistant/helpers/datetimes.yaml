@@ -1,0 +1,7 @@
+# Robots
+
+## Robots Last Ran
+robots_last_ran:
+  name: Robots Last Ran
+  has_date: true
+  has_time: true

@@ -1,0 +1,37 @@
+# Presence automations
+
+# When someone has arrived...
+- id: 2186ba6a-e76e-49d7-a9c8-40e781f38aae
+  alias: Someone has arrived
+  mode: single
+  trigger:
+    # As triggered by the `someone_is_home` binary sensor switching to `"on"`
+    - platform: state
+      entity_id:
+        - binary_sensor.someone_is_home
+      to: "on"
+  condition: []
+  action:
+    # Run the "Someone Arrived" script
+    - service: script.turn_on
+      data: {}
+      target:
+        entity_id: script.someone_arrived
+
+# When everyone has left...
+- id: 6b94f494-a23d-4d98-a187-ec52ae9d3192
+  alias: Everyone has left
+  mode: single
+  trigger:
+    # As triggered by the `someone_is_home` binary sensor switching to `"off"`
+    - platform: state
+      entity_id:
+        - binary_sensor.someone_is_home
+      to: "off"
+  condition: []
+  action:
+    # Run the "Everyone Left" script
+    - service: script.turn_on
+      data: {}
+      target:
+        entity_id: script.everyone_left

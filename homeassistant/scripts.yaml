@@ -1,51 +1,23 @@
-# When someone has arrived...
-someone_arrived:
-  alias: Someone Arrived
-  icon: mdi:location-enter
+# Activity
+
+## On wake-up...
+wake_up:
+  alias: Waking Up
+  icon: mdi:weather-sunset-up
   sequence:
-    # Turn on "Someone is Home"
-    - service: input_boolean.turn_on
-      data: {}
-      target:
-        entity_id: input_boolean.is_someone_home
-    # Set Living Room lights to Bright and Bathroom lights to Cool Bright
+    # Transition to Dimmed in Living Room over 15 minutes
     - service: hue.activate_scene
-      data: {}
-      target:
-        entity_id:
-          - scene.studio_bright
-          - scene.bathroom_cool_bright
-  mode: single
-
-# When everyone has left...
-everyone_left:
-  alias: Everyone Left
-  icon: mdi:location-exit
-  sequence:
-    # Turn off "Someone is Home"
-    - service: input_boolean.turn_off
-      data: {}
-      target:
-        entity_id: input_boolean.is_someone_home
-    # Turn off the Harmony Hub
-    - service: select.select_option
       data:
-        option: power_off
+        transition: 900
       target:
-        entity_id: select.harmony_hub_activities
-    # Turn off all lights
-    - service: light.turn_off
-      data: {}
-      target:
-        entity_id: light.home
-  mode: single
+        entity_id: scene.studio_dimmed
 
-# Time of day
-good_morning:
-  alias: Good Morning
+## On awake...
+awake:
+  alias: Awake
   icon: mdi:weather-sunny
   sequence:
-    # Turn on Energize in Living Room over 15 minutes
+    # Transition to Energize in Living Room over 15 minutes
     - service: hue.activate_scene
       data:
         transition: 900
@@ -59,3 +31,125 @@ good_morning:
       data: {}
       target:
         entity_id: scene.studio_natural_light
+
+## On winding down...
+wind_down:
+  alias: Winding Down
+  icon: mdi:weather-sunset-down
+  sequence:
+    # Set Living Rooms to Rest
+    - service: hue.activate_scene
+      data: {}
+      target:
+        entity_id: scene.studio_rest
+    # Wait 1 minute
+    - delay:
+        minutes: 1
+    # Transition to Nightlight over the next 14 minutes
+    - service: hue.activate_scene
+      data:
+        transition: 840
+      target:
+        entity_id: scene.studio_nightlight
+
+## On asleep...
+asleep:
+  alias: Asleep
+  icon: mdi:power-sleep
+  sequence:
+    # Turn off lights
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.home
+    # Turn off the TV
+    - service: remote.turn_off
+      data: {}
+      target:
+        entity_id: remote.harmony_hub
+
+# Presence
+
+## When someone has arrived...
+someone_arrived:
+  alias: Someone Arrived
+  icon: mdi:location-enter
+  sequence:
+    # Restore "Before Departure" scene
+    - service: scene.turn_on
+      target:
+        entity_id: scene.before_departure
+    # Set Living Room lights to Bright and Bathroom lights to Cool Bright
+    - service: hue.activate_scene
+      data: {}
+      target:
+        entity_id:
+          - scene.studio_bright
+          - scene.bathroom_cool_bright
+  mode: single
+
+## When everyone has left...
+everyone_left:
+  alias: Everyone Left
+  icon: mdi:location-exit
+  sequence:
+    # Update "Before Departure" scene
+    - service: scene.create
+      data:
+        scene_id: before_departure
+        snapshot_entities:
+          - input_select.activity
+          - select.harmony_hub_activities
+    # Set our activity status to "Away"
+    - service: input_select.select_option
+      data:
+        option: Away
+      target:
+        entity_id: input_select.activity
+    # Turn off the Harmony Hub
+    - service: select.select_option
+      data:
+        option: power_off
+      target:
+        entity_id: select.harmony_hub_activities
+    # Turn off all lights
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.home
+  mode: single
+
+# Robots
+
+## Start vacuum
+start_robot_vacuum:
+  alias: Start Robot Vacuum
+  icon: mdi:robot-vacuum
+  sequence:
+    # Send Pushcut notification
+    - service: shell_command.pushcut_roomba_deploying
+      data: {}
+    # Send Roomba to clean
+    - device_id: 4bb88ad19539595523d05bec370d7063
+      domain: vacuum
+      entity_id: vacuum.roomba
+      type: clean
+    # Update "Robots Last Ran" timestamp
+    - service: input_datetime.set_datetime
+      data:
+        timestamp: "{{ now().timestamp() }}"
+      target:
+        entity_id: input_datetime.robots_last_ran
+## Start mop
+start_robot_mop:
+  alias: Start Robot Mop
+  icon: mdi:robot-vacuum-variant
+  sequence:
+    # Send Pushcut notification
+    - service: shell_command.pushcut_braava_deploying
+      data: {}
+    # Send Braava to clean
+    - device_id: 5ed9b6624dfb178b4864483ffc6fce23
+      domain: vacuum
+      entity_id: vacuum.braava
+      type: clean
