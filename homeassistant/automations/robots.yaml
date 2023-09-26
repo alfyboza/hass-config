@@ -14,9 +14,9 @@
         seconds: 0
       to: "off"
   condition:
-    # If not in Do Not Disturb
+    # If not in Quiet Time
     - condition: state
-      entity_id: binary_sensor.do_not_disturb
+      entity_id: binary_sensor.quiet_time
       state: "off"
     # If robots haven't already ran today
     - condition: state
@@ -44,9 +44,9 @@
     - condition: state
       entity_id: binary_sensor.someone_is_home
       state: "off"
-    # If not in Do Not Disturb
+    # If not in Quiet Time
     - condition: state
-      entity_id: binary_sensor.do_not_disturb
+      entity_id: binary_sensor.quiet_time
       state: "off"
   action:
     # Run the "Start Robot Mop" script

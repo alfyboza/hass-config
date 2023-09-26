@@ -36,12 +36,3 @@
         {%- else -%}
           off
         {%- endif %}
-    # - name: Is Nighttime?
-    #   unique_id: is_nighttime
-
-    #   state: >
-    #     {% if is_state('binary_sensor.nighttime', 'on') and is_state('input_boolean.override_nighttime', 'off') -%}
-    #       on
-    #     {%- else -%}
-    #       off
-    #     {%- endif %}
